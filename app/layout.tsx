@@ -17,9 +17,9 @@ import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next.js Clerk Template",
+  title: "JeeXcode",
   description:
-    "A simple and powerful Next.js template featuring authentication and user management powered by Clerk.",
+    "A simple, clean & powerfull website to help you crack JEE. It has practice problems, contests, and much more.",
   openGraph: { images: ["/og.png"] },
 };
 
@@ -53,17 +53,17 @@ export default function RootLayout({
               <div className="text-2xl font-semibold text-indigo-500">JeeXcode</div>
             </Link>
             <Link href="/problems" className="flex items-center h-20 gap-2 sm:gap-4">
-              <div className="text-md font-semibold text-black">Problems</div>
+              <div className="text-sm  text-black">Problems</div>
             </Link>
             <Link href="/contests" className="flex items-center h-20 gap-2 sm:gap-4">
-              <div className="text-md font-semibold text-black">Contests</div>
+              <div className="text-sm text-black">Contests</div>
             </Link>
             <Link href="/discuss" className="flex items-center h-20 gap-2 sm:gap-4">
-              <div className="text-md font-semibold text-black">Discuss</div>
+              <div className="text-sm  text-black">Discuss</div>
             </Link>
             <div className="grow" />
             <Link href="/dashboard" className="flex items-center h-20 gap-2 sm:gap-4">
-              <div className="text-md font-semibold text-black">Dashboard</div>
+              <div className="text-sm text-black">Dashboard</div>
             </Link>
             <SignedIn>
               <div className="hidden sm:block">
