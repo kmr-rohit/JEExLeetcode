@@ -135,7 +135,7 @@ export default function ProblemPage() {
     if (id) {
       const problemId = parseInt(id as string, 10);
       const problem = getProblem(problemId);
-      setProblem(problem);
+      setProblem(problem || null); // Add null check
     }
   }, [id]);
   
@@ -144,7 +144,7 @@ export default function ProblemPage() {
   }
 
   function handleSave() {
-    if (selectedOption === problem?.correctAnswerIndex-1) {
+    if (selectedOption === problem?.correctAnswerIndex? problem.correctAnswerIndex - 1 : 0) {
       setResult('Correct');
     } else {
       setResult('Incorrect');
