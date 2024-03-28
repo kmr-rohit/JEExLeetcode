@@ -144,7 +144,7 @@ export default function ProblemPage() {
   }
 
   function handleSave() {
-    if (selectedOption === problem?.correctAnswerIndex? problem.correctAnswerIndex - 1 : 0) {
+    if (selectedOption === problem?.correctAnswerIndex -1 ) {
       setResult('Correct');
     } else {
       setResult('Incorrect');
