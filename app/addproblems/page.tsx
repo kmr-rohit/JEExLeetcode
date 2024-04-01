@@ -113,7 +113,7 @@ export default function Component() {
   };
 
   return (
-    <Card className="w-[90%] md:w-[60%] mx-10 md:mx-auto mt-10 border-2 border-black">
+    <Card className="w-full md:w-[60%] mx-10  mt-10 border-2 border-black">
       <CardContent className="space-y-4">
         <div className="space-y-2 mt-5">
           <Label htmlFor="description">Problem Description</Label>
