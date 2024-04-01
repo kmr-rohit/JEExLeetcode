@@ -48,7 +48,7 @@ export default function RootLayout({
         }}
       >
         <body className={`${inter.className} min-h-screen flex flex-col`}>
-          <header className="flex items-center h-20 gap-4 px-4 border-b border-black border-solid sm:px-8 border-opacity-20">
+          <header className="flex md:flex-row items-center  gap-2 gap-4 px-4 border-b border-black border-solid sm:px-8 border-opacity-20">
             <Link href="/" className="flex items-center h-20 gap-2 sm:gap-4">
               <div className="text-2xl font-semibold text-indigo-500">JeeXcode</div>
             </Link>
@@ -61,7 +61,7 @@ export default function RootLayout({
             <Link href="/discuss" className="flex items-center h-20 gap-2 sm:gap-4">
               <div className="text-sm  text-black">Discuss</div>
             </Link>
-            <div className="grow" />
+            <div className="grow " />
             <Link href="/dashboard" className="flex items-center h-20 gap-2 sm:gap-4">
               <div className="text-sm text-black">Dashboard</div>
             </Link>
@@ -84,7 +84,7 @@ export default function RootLayout({
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </header>
-          <main className="grow">{children}</main>
+          <main className="w-screen h-screen">{children}</main>
           <footer className="flex items-center h-20 gap-1 px-8 font-medium border-t md:px-20">
             <Link href="/" className="flex items-center h-20 gap-2 sm:gap-4">
               <div className="text-xl font-semibold text-indigo-500">JeeXcode</div>
