@@ -1,201 +1,167 @@
-import React from 'react'
+"use client"
+import { useEffect, useState } from 'react';
+import { Client, Databases ,Storage } from "appwrite";
+import Link from "next/link"
+import {
+  ListFilter,
+  PlusCircle,
+} from "lucide-react"
+
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import Link from 'next/link'
-// Define type of Problem Data : id , title , description , difficulty , subject , submissionRate , tags
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
 
-export type Problem = {
-  id: number
-  title: string
-  description: string
-  difficulty: string
-  subject: string
-  submissionRate: number
-  tags: string[]
-  options : string[]
-  correctAnswerIndex : number
-  userAnswer : number
-}
+const client = new Client()
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject('660aa6a870bf3eccb816');
 
-// Define list of problems
+const storage = new Storage(client);
+const databases = new Databases(client);
 
-const problems: Problem[] = [
-  {
-    id: 1,
-    title: 'Two Sum',
-    description: 'Given an array of integers, return indices of the two numbers such that they add up to a specific target.',
-    difficulty: 'Easy',
-    subject: 'Physics',
-    submissionRate: 0.5,
-    tags: ['NLM', 'Work Energy'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  },
-  {
-    id: 2,
-    title: 'Add Two Numbers',
-    description: 'You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit.',
-    difficulty: 'Medium',
-    subject: 'Chemistry',
-    submissionRate: 0.7,
-    tags: ['Chemical Reactions', 'Atomic Structure'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  },
-  {
-    id: 3,
-    title: 'Longest Substring Without Repeating Characters',
-    description: 'Given a string, find the length of the longest substring without repeating characters.',
-    difficulty: 'Hard',
-    subject: 'Maths',
-    submissionRate: 0.6,
-    tags: ['Algebra', 'Calculus'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  },
-  {
-    id: 4,
-    title: 'Longest Substring Without Repeating Characters',
-    description: 'Given a string, find the length of the longest substring without repeating characters.',
-    difficulty: 'Hard',
-    subject: 'Maths',
-    submissionRate: 0.6,
-    tags: ['Algebra', 'Calculus'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  },
-  {
-    id: 5,
-    title: 'Longest Substring Without Repeating Characters',
-    description: 'Given a string, find the length of the longest substring without repeating characters.',
-    difficulty: 'Hard',
-    subject: 'Maths',
-    submissionRate: 0.6,
-    tags: ['Algebra', 'Calculus'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  },
-  {
-    id: 6,
-    title: 'Longest Substring Without Repeating Characters',
-    description: 'Given a string, find the length of the longest substring without repeating characters.',
-    difficulty: 'Hard',
-    subject: 'Maths',
-    submissionRate: 0.6,
-    tags: ['Algebra', 'Calculus'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  },
-  {
-    id: 7,
-    title: 'Longest Substring Without Repeating Characters',
-    description: 'Given a string, find the length of the longest substring without repeating characters.',
-    difficulty: 'Hard',
-    subject: 'Maths',
-    submissionRate: 0.6,
-    tags: ['Algebra', 'Calculus'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  },
-  {
-    id: 8,
-    title: 'Longest Substring Without Repeating Characters',
-    description: 'Given a string, find the length of the longest substring without repeating characters.',
-    difficulty: 'Hard',
-    subject: 'Maths',
-    submissionRate: 0.6,
-    tags: ['Algebra', 'Calculus'],
-    options : ['dafd','adfd','asdsf','adsd'],
-    correctAnswerIndex : 1,
-    userAnswer : 0
-  }
-]
+export default function Problems() {
+  const [problems, setProblems] = useState([]);
+  useEffect(() => {
+    const promise = databases.listDocuments('660aa6df1feb26fb9908', '660aa6ee26e26d787177');
+    promise.then(function (response) {
+      console.log(response); // Success
+      setProblems(response.documents);
+    }, function (error) {
+      console.log(error); // Failure
+    });
+  }, []);
 
-// Define a function to render list of problems
-
-function renderProblems(problems: Problem[]) {
   return (
-// render table of Problem component using clean tailwind css styles 
-
-    
-    <div>
-    <Table className="w-full mt-6">
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-lg text-blue-500">Problem Title</TableHead>
-          <TableHead className=' text-lg text-blue-500'>Subject</TableHead>
-          <TableHead className='text-lg text-blue-500'>Difficulty</TableHead>
-          <TableHead className='text-lg pl-6 w-[100px]'>Action</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {problems.map((problem) => (
-          <TableRow key={problem.id}>
-            <TableCell className='text-md text-left'>{problem.title}</TableCell>
-            <TableCell className='text-left '>
-              <span className='bg-black text-white rounded-lg p-2'>
-                {problem.subject}
-              </span>
-            </TableCell>
-            <TableCell className='text-left'>
-              {problem.difficulty === 'Easy' ? (
-            <span className='rounded-lg bg-green-500 rounded-lg p-2'>
-                {problem.difficulty}
-              </span> 
-              ) : problem.difficulty === 'Medium' ? (
-                <span className=' rounded-lg bg-blue-500 rounded-lg p-2'>
-                {problem.difficulty}
-              </span>
-              ) : (
-                <span className='rounded-lg bg-red-500 rounded-lg p-2'>
-                {problem.difficulty}
-              </span>
-              )}
-            </TableCell>
-            <TableCell className="items-start">
-              <Link href={`/problems/${problem.id}`}>
-               <Button className="bg-black text-white" size="sm">Solve</Button>
-              </Link>
-
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-
-
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+          <Tabs defaultValue="all">
+            <div className="flex items-center">
+              <TabsList>
+                <TabsTrigger value="all">All</TabsTrigger>
+                <TabsTrigger value="solved">Solved</TabsTrigger>
+                <TabsTrigger value="markedReview">Marked For Review</TabsTrigger>
+              </TabsList>
+              <div className="ml-auto flex items-center gap-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-7 gap-1">
+                      <ListFilter className="h-3.5 w-3.5" />
+                      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                        Filter
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuCheckboxItem checked>
+                      Difficulty Level
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>Subject</DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>
+                      Submission Rate
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button size="sm" className="h-7 gap-1 bg-blue-400">
+                  <PlusCircle className="h-3.5 w-3.5 " />
+                  <Link href={`/addproblems`}>
+                    <Button size="sm">Add Problem</Button>
+                  </Link>
+                </Button>
+              </div>
+            </div>
+            <TabsContent value="all">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Problems</CardTitle>
+                  <CardDescription>
+                  This page hosts list of well setted problems by Experts , List of problems with supported fillters like , subject , difficulty , submission rate etc.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="hidden w-[100px] sm:table-cell">
+                          <span className="sr-only">Sr.No</span>
+                        </TableHead>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Subject</TableHead>
+                        <TableHead>Difficulty</TableHead>
+                        <TableHead>
+                          <span >Action</span>
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                    {problems.map((problem, index) => (
+                      <TableRow key={problem.$id}>
+                        <TableCell className="hidden sm:table-cell">
+                          {index + 1}.
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {problem.description}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{problem.subject}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={problem.difficulty}>{problem.difficulty}</Badge>
+                        </TableCell>
+                        <TableCell className="">
+                          <Link href={`/problems/${problem.$id}`}>
+                            <Button size="sm" className="bg-black text-white">
+                              Solve
+                            </Button>
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    ))} 
+                    </TableBody>
+                  </Table>
+                </CardContent>
+                <CardFooter>
+                  <div className="text-xs text-muted-foreground">
+                    Showing <strong>1-20</strong> of <strong>500</strong>{" "}
+                    Problems
+                  </div>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </main>
+      </div>
     </div>
-
   )
 }
-
-
-function Problems() {
-  return (
-    <div className="flex justify-center h-screen bg-gray-100">
-      <div className="text-center m-2">
-        {/* <h1 className="text-3xl font-semibold text-indigo-500">Problems</h1> */}
-        <p className="text-lg text-black">This page hosts list of well setted problems by Experts , List of problems with supported fillters like , subject , difficulty , submission rate etc. </p>
-        {renderProblems(problems)}
-      </div>
-      </div>
-  )
-}
-
-export default Problems
