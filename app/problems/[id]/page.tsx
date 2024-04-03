@@ -14,6 +14,8 @@ export type Problem = {
   subject: string
   tags: string[]
   imgId: string
+  solutionImgId: string
+  correctAnswer: string
 }
 
 
@@ -25,8 +27,6 @@ const storage = new Storage(client);
 const databases = new Databases(client);
 
 const options = ["A" , "B" , "C" , "D"];
-
-// extract id from url slug 
 
 function getProblem(id: string): Promise<Problem> {
   console.log(id)
@@ -40,7 +40,9 @@ function getProblem(id: string): Promise<Problem> {
         difficulty: response.difficulty,
         subject: response.subject,
         tags: response.tags,
-        imgId: response.imgId
+        imgId: response.imgId,
+        solutionImgId: response.solutionImgId,
+        correctAnswer: response.correctOption
       };
       return problem;
   }, function (error) {
@@ -62,11 +64,15 @@ export default function ProblemPage() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const [solutionImageUrl, setSolutionImageUrl] = useState<string | undefined>(undefined);
+  const [showSolution, setShowSolution] = useState<boolean>(false);
+
   useEffect(() => {
     if (id) {
       getProblem(id).then(problem => {
         setProblem(problem);
         setImageUrl(getImageUrl(problem.imgId).toString());
+        setSolutionImageUrl(getImageUrl(problem.solutionImgId).toString());
       }).catch(error => {
         console.error(error);
         // handle error
@@ -80,77 +86,104 @@ export default function ProblemPage() {
   }
 
   function handleSave() {
-    if (selectedOption === problem?.correctAnswerIndex -1 ) {
+    if (selectedOption === options.indexOf(problem?.correctAnswer)) {
       setResult('Correct');
     } else {
       setResult('Incorrect');
     }
   }
 
-  
+  function handleShowSolution() {
+    setShowSolution(true);
+  }
 
   function renderProblem(problem : Problem) { 
     return (
-      <Card className="w-11/12 mx-auto my-10 p-5 border-2 border-gray-300 rounded-md shadow-lg">
-        <CardHeader className="pb-4 border-b-2 border-gray-200">
-          <div className='flex space-x-4 border-1 border-black mt-2'>
-            <h2 className="text-md font-medium">Difficulty: {problem.difficulty}</h2>
-            {/* <p className="text-md font-medium">Submission Rate: {problem.submissionRate}</p> */}
-            <p className="text-md font-medium">Subject: {problem.subject}</p>
-            <p className="text-md font-medium">Tags: {problem.tags.join(", ")}</p>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-6 py-4">
-          <div className="space-y-2">
+      <div className="grid">
+        <Card className="w-11/12 mx-auto my-10 p-2 ">
+          <CardHeader className="pb-4 border-b-2 border-gray-200">
             <p className="text-xl font-semibold">Problem: {problem.description} </p>
-            <div className="">
-              <img src={imageUrl} alt="Problem" />
+            <div className='flex space-x-4 border-1 border-black mt-2'>
+              <h2 className="text-md font-medium">Difficulty: {problem.difficulty}</h2>
+              <p className="text-md font-medium">Subject: {problem.subject}</p>
+              <p className="text-md font-medium">Tags: {problem.tags.join(", ")}</p>
             </div>
-            
-            <p className='text-xl flex font-semibold'>Options :</p>
-            <div className="flex space-x-4 mt-2">
-              {options.map((option, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="options"
-                  id={`option-${index}`}
-                  value={index}
-                  checked={selectedOption === index}
-                  onChange={handleOptionChange}
-                />
-                <Label htmlFor={`option-${index}`}>{option}</Label>
+          </CardHeader>
+          <CardContent className="space-y-6 py-4">
+            <div className="space-y-2">
+              
+              <div className="">
+                <img src={imageUrl} alt="Problem" />
               </div>
-              ))}
+              
+              <p className='text-xl flex font-semibold'>Options :</p>
+              <div className="flex space-x-4 mt-2">
+                {options.map((option, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                  <Input
+                    type="radio"
+                    name="options"
+                    id={`option-${index}`}
+                    value={index}
+                    checked={selectedOption === index}
+                    onChange={handleOptionChange}
+                  />
+                  <Label htmlFor={`option-${index}`}>{option}</Label>
+                </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between gap-4 m-4">
-        <Button
-            className="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded"
-            variant="outline"
-          >
-            Mark for review
-          </Button>
+          </CardContent>
+          <CardFooter className="flex justify-between gap-4 m-4">
           <Button
-            className="bg-green-500 text-white hover:bg-green-600 py-2 px-4 rounded"
-            variant="default"
-            onClick={handleSave}
-          >
-            Save
-          </Button>
-        </CardFooter>
-        {result && (
-          <div className={`text-center mt-4 text-2xl font-bold ${result === 'Correct' ? 'text-green-500' : 'text-red-500'}`}>
-            {result}
-          </div>
+              className="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded"
+              variant="outline"
+            >
+              Mark for review
+            </Button>
+            { (
+                <Button
+                  className="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded"
+                  variant="outline"
+                  onClick={() => setShowSolution(!showSolution)}
+                >
+                  {showSolution ? "Hide Solution" : "View Solution"}
+                </Button>
+              
+              )}
+            <Button
+              className="bg-green-500 text-white hover:bg-green-600 py-2 px-4 rounded"
+              variant="default"
+              onClick={handleSave}
+            >
+              Submit
+            </Button>
+             
+          </CardFooter>
+          {result && (
+            <div className={`text-center mt-4 text-2xl font-bold ${result === 'Correct' ? 'text-green-500' : 'text-red-500'}`}>
+              {result}
+            </div>
+          )}
+        </Card>
+        {showSolution && (
+          <Card className="w-11/12 mx-auto my-10 p-2 ">
+            <CardHeader className="pb-4 border-b-2 border-gray-200">
+              <p className="text-xl font-semibold">Correct Option: {problem.correctAnswer}</p>
+            </CardHeader>
+            <CardContent className="space-y-6 py-4">
+              <div className="space-y-2">
+                <div className="">
+                  <img src={solutionImageUrl} alt="Solution" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
-      </Card>
-
+       
+      </div>
     )
   }
-
-
 
   if (!problem) {
     return <div>Loading...</div>;
@@ -158,5 +191,4 @@ export default function ProblemPage() {
   else{
     return renderProblem(problem);
   }
-
 }
