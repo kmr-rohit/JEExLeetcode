@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input} from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Client, Storage , Databases ,Query  } from "appwrite";
+import Loader from "@/components/ui/Loader";
 
 export type Problem = {
   id: String
@@ -99,7 +100,8 @@ export default function ProblemPage() {
 
   function renderProblem(problem : Problem) { 
     return (
-      <div className="grid">
+      <div className="grow">
+        <div>
         <Card className="w-11/12 mx-auto my-10 p-2 ">
           <CardHeader className="pb-4 border-b-2 border-gray-200">
             <p className="text-xl font-semibold">Problem: {problem.description} </p>
@@ -134,7 +136,7 @@ export default function ProblemPage() {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between gap-4 m-4">
+          <CardFooter className="flex flex-col md:flex-row justify-between gap-4 m-4">
           <Button
               className="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded"
               variant="outline"
@@ -166,27 +168,29 @@ export default function ProblemPage() {
             </div>
           )}
         </Card>
-        {showSolution && (
-          <Card className="w-11/12 mx-auto my-10 p-2 ">
-            <CardHeader className="pb-4 border-b-2 border-gray-200">
-              <p className="text-xl font-semibold">Correct Option: {problem.correctAnswer}</p>
-            </CardHeader>
-            <CardContent className="space-y-6 py-4">
-              <div className="space-y-2">
-                <div className="">
-                  <img src={solutionImageUrl} alt="Solution" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-       
+        </div>
+        <div>
+          {showSolution && (
+                <Card className="w-11/12 mx-auto my-10 p-2 ">
+                  <CardHeader className="pb-4 border-b-2 border-gray-200">
+                    <p className="text-xl font-semibold">Correct Option: {problem.correctAnswer}</p>
+                  </CardHeader>
+                  <CardContent className="space-y-6 py-4">
+                    <div className="space-y-2">
+                      <div className="">
+                        <img src={solutionImageUrl} alt="Solution" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+          </div>
       </div>
     )
   }
 
   if (!problem) {
-    return <div>Loading...</div>;
+    return <div className="justify-center mx-[50%] "><Loader /></div>;
   }
   else{
     return renderProblem(problem);
