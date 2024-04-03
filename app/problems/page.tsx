@@ -41,6 +41,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 
+
 const client = new Client()
     .setEndpoint('https://cloud.appwrite.io/v1')
     .setProject('660aa6a870bf3eccb816');
@@ -50,6 +51,10 @@ const databases = new Databases(client);
 
 export default function Problems() {
   const [problems, setProblems] = useState([]);
+  const [difficultyFilter, setDifficultyFilter] = useState('');
+  const [subjectFilter, setSubjectFilter] = useState('');
+  
+
   useEffect(() => {
     const promise = databases.listDocuments('660aa6df1feb26fb9908', '660aa6ee26e26d787177');
     promise.then(function (response) {
@@ -61,8 +66,8 @@ export default function Problems() {
   }, []);
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+    <div className="flex flex-wrap flex-col bg-muted/40">
+      <div className="flex flex-col sm:gap-4 sm:py-4 ">
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <Tabs defaultValue="all">
             <div className="flex items-center">
@@ -84,19 +89,48 @@ export default function Problems() {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Filter by</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem checked>
-                      Difficulty Level
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>Subject</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>
-                      Submission Rate
-                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem 
+                        checked={difficultyFilter === 'Easy'}
+                        onChange={() => setDifficultyFilter(prev => prev === 'Easy' ? '' : 'Easy')}
+                      >
+                        Easy
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem 
+                        checked={difficultyFilter === 'Medium'}
+                        onChange={() => setDifficultyFilter(prev => prev === 'Medium' ? '' : 'Medium')}
+                      >
+                        Medium
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem 
+                        checked={difficultyFilter === 'Hard'}
+                        onChange={() => setDifficultyFilter(prev => prev === 'Hard' ? '' : 'Hard')}
+                      >
+                        Hard
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem 
+                        checked={subjectFilter === 'Chemistry'}
+                        onChange={() => setSubjectFilter(prev => prev === 'Chemistry' ? '' : 'Chemistry')}
+                      >
+                        Chemistry
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem 
+                        checked={subjectFilter === 'Math'}
+                        onChange={() => setSubjectFilter(prev => prev === 'Math' ? '' : 'Math')}
+                      >
+                        Math
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem 
+                        checked={subjectFilter === 'Physics'}
+                        onChange={() => setSubjectFilter(prev => prev === 'Physics' ? '' : 'Physics')}
+                      >
+                        Physics
+                      </DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="sm" className="h-7 gap-1 bg-blue-400">
+                <Button size="sm" className="h-7 gap-1 bg-green-500">
                   <PlusCircle className="h-3.5 w-3.5 " />
-                  <Link href={`/addproblems`}>
-                    <Button size="sm">Add Problem</Button>
+                  <Link className = "" href={`/addproblems`}>
+                    Add Problem
                   </Link>
                 </Button>
               </div>
@@ -114,18 +148,27 @@ export default function Problems() {
                     <TableHeader>
                       <TableRow>
                         <TableHead className="hidden w-[100px] sm:table-cell">
-                          <span className="sr-only">Sr.No</span>
+                          <span className="">Sr.No</span>
                         </TableHead>
                         <TableHead>Title</TableHead>
                         <TableHead>Subject</TableHead>
                         <TableHead>Difficulty</TableHead>
+                        {/* <TableHead className=''>Submission Rate</TableHead> */}
                         <TableHead>
                           <span >Action</span>
                         </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                    {problems.map((problem, index) => (
+                    {problems.filter(problem => {
+                      if (difficultyFilter && problem.difficulty !== difficultyFilter) {
+                        return false;
+                      }
+                      if (subjectFilter && problem.subject !== subjectFilter) {
+                        return false;
+                      }
+                      return true;
+                    }).map((problem, index) => (
                       <TableRow key={problem.$id}>
                         <TableCell className="hidden sm:table-cell">
                           {index + 1}.
@@ -139,6 +182,9 @@ export default function Problems() {
                         <TableCell>
                           <Badge variant={problem.difficulty}>{problem.difficulty}</Badge>
                         </TableCell>
+                        {/* <TableCell>
+                          0.7
+                        </TableCell> */}
                         <TableCell className="">
                           <Link href={`/problems/${problem.$id}`}>
                             <Button size="sm" className="bg-black text-white">

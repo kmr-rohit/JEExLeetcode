@@ -7,7 +7,7 @@ import "./home.css";
 export default function Home() {
   return (
     <main className="">
-      <article className="grid lg:grid-cols-2 min-h-screen">
+      <article className="grid lg:grid-cols-2 h-screen">
         <div className="px-8 py-20 md:px-20 lg:py-48">
           <h1 className="text-5xl font-semibold text-transparent md:text-6xl gradient">
             Crack JEE Here. 

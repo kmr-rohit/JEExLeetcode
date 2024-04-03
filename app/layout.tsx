@@ -47,8 +47,8 @@ export default function RootLayout({
           },
         }}
       >
-        <body className={`${inter.className} min-h-screen flex flex-col`}>
-          <header className="flex md:flex-row items-center  gap-2 gap-4 px-4 border-b border-black border-solid sm:px-8 border-opacity-20">
+        <body className={`${inter.className} flex flex-col`}>
+          <header className="flex md:flex-nowrap items-center gap-2 md:px-4 border-b border-black border-solid  border-opacity-20">
             <Link href="/" className="flex items-center h-20 gap-2 sm:gap-4">
               <div className="text-2xl font-semibold text-indigo-500">JeeXcode</div>
             </Link>
@@ -84,45 +84,12 @@ export default function RootLayout({
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </header>
-          <main className="w-screen h-screen">{children}</main>
-          <footer className="flex items-center h-20 gap-1 px-8 font-medium border-t md:px-20">
+          <main className="grow">{children}</main>
+          <footer className="flex flex-wrap items-center h-20 gap-1 px-8 font-medium border-t md:px-20">
             <Link href="/" className="flex items-center h-20 gap-2 sm:gap-4">
               <div className="text-xl font-semibold text-indigo-500">JeeXcode</div>
             </Link>
             <span className="text-sm">© 2024</span>
-            {/* <nav className="flex justify-end grow sm:gap-2"> */}
-              {/* <a
-                className="flex gap-2 px-3 py-2 text-sm font-semibold text-gray-600 transition duration-100 rounded-md hover:text-gray-800"
-                href="https://clerk.com/docs?utm_source=vercel-template&utm_medium=template_repos&utm_campaign=nextjs_template"
-              >
-                <div className="m-auto">
-                  <Docs />
-                </div>
-                <span className="hidden sm:inline"> Visit Clerk Docs</span>
-                <span className="inline sm:hidden"> Docs</span>
-              </a>
-              <a
-                className="flex gap-2 px-3 py-2 text-sm font-semibold text-gray-600 transition duration-100 rounded-md hover:text-gray-800"
-                href="https://github.com/clerkinc/clerk-next-app"
-              >
-                <div className="m-auto">
-                  <Github />
-                </div>
-                <span className="hidden sm:inline"> View on Github</span>
-              </a>
-              <a
-                className="flex flex-col justify-center p-2 hover:underline"
-                href="https://twitter.com/ClerkDev"
-              >
-                <Twitter />
-              </a>
-              <a
-                className="flex flex-col justify-center p-2 hover:underline"
-                href="https://discord.com/invite/b5rXHjAg7A"
-              >
-                <Discord />
-              </a>
-            </nav> */}
           </footer>
         </body>
       </ClerkProvider>
