@@ -77,56 +77,60 @@ export default function Problems() {
                 <TabsTrigger value="markedReview">Marked For Review</TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-7 gap-1">
-                      <ListFilter className="h-3.5 w-3.5" />
-                      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                        Filter
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-7 gap-1">
+                    <ListFilter className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                      Filter
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Filter by Difficulty</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem 
+                      checked={difficultyFilter === 'Easy'}
+                      onCheckedChange={() => setDifficultyFilter(prev => prev === 'Easy' ? '' : 'Easy')}
+                    >
+                      Easy
+                    </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem 
-                        checked={difficultyFilter === 'Easy'}
-                        onChange={() => setDifficultyFilter(prev => prev === 'Easy' ? '' : 'Easy')}
-                      >
-                        Easy
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem 
-                        checked={difficultyFilter === 'Medium'}
-                        onChange={() => setDifficultyFilter(prev => prev === 'Medium' ? '' : 'Medium')}
-                      >
-                        Medium
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem 
-                        checked={difficultyFilter === 'Hard'}
-                        onChange={() => setDifficultyFilter(prev => prev === 'Hard' ? '' : 'Hard')}
-                      >
-                        Hard
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem 
-                        checked={subjectFilter === 'Chemistry'}
-                        onChange={() => setSubjectFilter(prev => prev === 'Chemistry' ? '' : 'Chemistry')}
-                      >
-                        Chemistry
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem 
-                        checked={subjectFilter === 'Math'}
-                        onChange={() => setSubjectFilter(prev => prev === 'Math' ? '' : 'Math')}
-                      >
-                        Math
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem 
-                        checked={subjectFilter === 'Physics'}
-                        onChange={() => setSubjectFilter(prev => prev === 'Physics' ? '' : 'Physics')}
-                      >
-                        Physics
-                      </DropdownMenuCheckboxItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      checked={difficultyFilter === 'Medium'}
+                      onCheckedChange={() => setDifficultyFilter(prev => prev === 'Medium' ? '' : 'Medium')}
+                    >
+                      Medium
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem 
+                      checked={difficultyFilter === 'Hard'}
+                      onCheckedChange={() => setDifficultyFilter(prev => prev === 'Hard' ? '' : 'Hard')}
+                    >
+                      Hard
+                    </DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>Filter by Subject</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem 
+                      checked={subjectFilter === 'Chemistry'}
+                      onCheckedChange={() => setSubjectFilter(prev => prev === 'Chemistry' ? '' : 'Chemistry')}
+                    >
+                      Chemistry
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem 
+                      checked={subjectFilter === 'Math'}
+                      onCheckedChange={() => setSubjectFilter(prev => prev === 'Math' ? '' : 'Math')}
+                    >
+                      Math
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem 
+                      checked={subjectFilter === 'Physics'}
+                      onCheckedChange={() => setSubjectFilter(prev => prev === 'Physics' ? '' : 'Physics')}
+                    >
+                      Physics
+                    </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
                 <Button size="sm" className="h-7 gap-1 bg-green-500">
                   <PlusCircle className="h-3.5 w-3.5 " />
                   <Link className = "" href={`/addproblems`}>
